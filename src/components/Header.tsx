@@ -15,7 +15,7 @@ const Header = async () => {
         <input
           type='text'
           placeholder='Search...'
-          className='md:w-[200px] w-[150px] p-2 bg-transparent outline-none'
+          className='md:w-[200px] w-[150px] p-2 bg-transparent  outline-none '
         />
       </div>
       <div className='flex items-center gap-1'>
