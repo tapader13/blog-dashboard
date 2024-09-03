@@ -33,7 +33,7 @@ export default function RootLayout({
             <Navvar />
           </div>
           {/* right content */}
-          <div className='w-[90%] md:w-[92%] lg:w-[84%] xl:w-[90%] bg-[#F7F8FA] overflow-scroll flex flex-col'>
+          <div className='w-[90%] md:w-[92%] lg:w-[84%] xl:w-[90%] bg-[#F7F8FA] overflow-y-scroll  flex flex-col'>
             <Header />
             {children}
           </div>
