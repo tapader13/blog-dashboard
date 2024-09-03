@@ -34,17 +34,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === 'google') {
         try {
           const { email, name, image, id } = user;
-          return true;
-          // await connectDb();
 
-          // const alreadyUser = await User.findOne({ email });
+          await connectDb();
 
-          // if (alreadyUser) {
-          //   console.log(email, name, image, id);
-          //   return true;
-          // } else {
-          //   return false;
-          // }
+          const alreadyUser = await User.findOne({ email });
+
+          if (alreadyUser) {
+            console.log(email, name, image, id);
+            return true;
+          } else {
+            return false;
+          }
         } catch (error) {
           return false;
         }
