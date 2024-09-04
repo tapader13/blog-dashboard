@@ -8,7 +8,8 @@ const AddBlogs = async () => {
   console.log(session?.user, 'session');
   if (!session?.user) {
     redirect('/login');
-  }
+  } 
+  
   return (
     <div className='px-3 w-full'>
       <div className='flex justify-between'>

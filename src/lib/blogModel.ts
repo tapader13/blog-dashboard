@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface IBlog {
+export interface IBlog {
   title: string;
   slug: string;
   description: string;

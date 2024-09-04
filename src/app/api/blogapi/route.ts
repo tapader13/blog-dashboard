@@ -36,22 +36,13 @@ export const POST = async (req: NextRequest) => {
 export const GET = async (req: NextRequest) => {
   try {
     await connectDb();
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    const blogs = await Blog.findById(id);
-    if (!blogs) {
-      return new NextResponse(
-        JSON.stringify({
-          message: 'Blog not found',
-        }),
-        { status: 404 }
-      );
-    }
+
+    const blogs = await Blog.find();
     return new NextResponse(JSON.stringify(blogs), { status: 200 });
   } catch (error) {
     return new NextResponse(
       JSON.stringify({
-        message: 'Error fetching blogs',
+        message: 'Error fetching blog(s)',
         error,
       }),
       { status: 500 }
