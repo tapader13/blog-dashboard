@@ -25,7 +25,7 @@ export interface BlogData {
 }
 
 const getBlogs = async (): Promise<BlogData[]> => {
-  const response = await fetch('http://localhost:3000/api/blogapi', {
+  const response = await fetch(`${process.env.NEXT_URL}/api/blogapi`, {
     cache: 'no-store',
   });
 
