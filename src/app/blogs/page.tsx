@@ -26,9 +26,12 @@ interface BlogData {
 }
 
 const getBlogs = async (): Promise<BlogData[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/blogapi`, {
-    cache: 'no-store',
-  });
+  const response = await fetch(
+    `https://blog-dashboard-theta-seven.vercel.app/api/blogapi`,
+    {
+      cache: 'no-store',
+    }
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch blogs');
