@@ -48,7 +48,7 @@ const Navvar = () => {
       <form
         action={async () => {
           'use server';
-          await signOut({ callbackUrl: '/login' });
+          await signOut({ redirectTo: '/login' });
         }}
       >
         <Button type='submit'>Sign out</Button>
