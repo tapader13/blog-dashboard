@@ -6,7 +6,7 @@ import { BlogData } from '../../pendingblogs/page';
 
 const getBlogs = async (id: string): Promise<BlogData | null> => {
   try {
-    const response = await fetch(`${process.env.NEXT_URL}/api/blogapi/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/blogapi/${id}`, {
       cache: 'no-store',
     });
 
