@@ -11,7 +11,7 @@ const SmallCard = () => {
   return (
     <div>
       {' '}
-      <Card className='max-w-xs' x-chunk='charts-01-chunk-3'>
+      <Card x-chunk='charts-01-chunk-3'>
         <CardHeader className='p-4 pb-0'>
           <CardTitle>Walking Distance</CardTitle>
           <CardDescription>

@@ -7,6 +7,7 @@ export interface IBlog {
   category: [string];
   tags: [string];
   status: string;
+  specificCategory: string;
 }
 
 const blogSchema = new mongoose.Schema<IBlog>(
@@ -26,10 +27,14 @@ const blogSchema = new mongoose.Schema<IBlog>(
     category: {
       type: [String],
     },
+
     tags: {
       type: [String],
     },
     status: {
+      type: String,
+    },
+    specificCategory: {
       type: String,
     },
   },

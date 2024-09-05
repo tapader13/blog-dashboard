@@ -1,7 +1,13 @@
 'use client';
 
 import { TrendingUp } from 'lucide-react';
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  ResponsiveContainer,
+} from 'recharts';
 
 import {
   Card,
@@ -20,23 +26,38 @@ import {
 
 export const description = 'A stacked area chart';
 
-const chartData = [
-  { category: 'Js', value: 35 },
-  { category: 'React', value: 28 },
-  { category: 'Express', value: 40 },
-  { category: 'Node.js', value: 22 },
-  { category: 'CSS', value: 18 },
-  { category: 'HTML', value: 30 },
-];
-
 const chartConfig = {
   value: {
     label: 'Value',
     color: 'hsl(var(--chart-3))',
   },
 } satisfies ChartConfig;
-
-export function Cards() {
+interface cardsData {
+  Technology?: string;
+  Health?: string;
+  Education?: string;
+  Finance?: string;
+  Lifestyle?: string;
+  Travel?: string;
+  Food?: string;
+  Fashion?: string;
+  Entertainment?: string;
+}
+export function Cards({ convertObject }: { convertObject: cardsData }) {
+  const chartData = [
+    { category: 'Food', value: Number(convertObject.Food) || 10 },
+    { category: 'Technology', value: Number(convertObject.Technology) || 10 },
+    { category: 'Health', value: Number(convertObject.Health) || 10 },
+    { category: 'Education', value: Number(convertObject.Education) || 10 },
+    { category: 'Finance', value: Number(convertObject.Finance) || 10 },
+    { category: 'Lifestyle', value: Number(convertObject.Lifestyle) || 10 },
+    { category: 'Travel', value: Number(convertObject.Travel) || 10 },
+    { category: 'Fashion', value: Number(convertObject.Fashion) || 10 },
+    {
+      category: 'Entertainment',
+      value: Number(convertObject.Entertainment) || 10,
+    },
+  ];
   return (
     <Card className='h-[400px]'>
       <CardHeader>
@@ -46,35 +67,40 @@ export function Cards() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer className='w-full h-[200px]' config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 20,
-              right: 20,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey='category'
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator='line' />}
-            />
-            <Area
-              dataKey='value'
-              type='natural'
-              fill='var(--color-value)'
-              fillOpacity={0.4}
-              stroke='var(--color-value)'
-              stackId='a'
-            />
-          </AreaChart>
+        <ChartContainer
+          className='w-full  h-[200px]  '
+          config={chartConfig}
+        >
+          <ResponsiveContainer width='100%' height='100%'>
+            <AreaChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 20,
+                right: 20,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey='category'
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator='line' />}
+              />
+              <Area
+                dataKey='value'
+                type='natural'
+                fill='var(--color-value)'
+                fillOpacity={0.4}
+                stroke='var(--color-value)'
+                stackId='a'
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
       <CardFooter>

@@ -5,8 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export const POST = async (req: NextRequest) => {
   try {
     await connectDb();
-    const { title, slug, description, category, tags, status } =
-      await req.json();
+    const {
+      title,
+      slug,
+      description,
+      category,
+      tags,
+      status,
+      specificCategory,
+    } = await req.json();
     const blog = await Blog.create({
       title,
       slug,
@@ -14,7 +21,9 @@ export const POST = async (req: NextRequest) => {
       category,
       tags,
       status,
+      specificCategory,
     });
+    console.log(blog);
     return new NextResponse(
       JSON.stringify({
         message: 'Blog created successfully',
@@ -86,8 +95,16 @@ export const DELETE = async (req: NextRequest) => {
 export const PUT = async (req: NextRequest) => {
   try {
     await connectDb();
-    const { id, title, slug, description, category, tags, status } =
-      await req.json();
+    const {
+      id,
+      title,
+      slug,
+      description,
+      category,
+      tags,
+      status,
+      specificCategory,
+    } = await req.json();
 
     if (!id) {
       return new NextResponse(
@@ -107,6 +124,7 @@ export const PUT = async (req: NextRequest) => {
         category,
         tags,
         status,
+        specificCategory,
       },
       { new: true }
     );
@@ -119,7 +137,7 @@ export const PUT = async (req: NextRequest) => {
         { status: 404 }
       );
     }
-
+    console.log(result);
     return new NextResponse(
       JSON.stringify({
         message: 'Blog updated successfully',

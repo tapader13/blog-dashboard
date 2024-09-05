@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { RiLogoutBoxLine } from 'react-icons/ri';
 import {
   RiHomeLine,
   RiFileListLine,
@@ -51,7 +52,10 @@ const Navvar = () => {
           await signOut({ redirectTo: '/login' });
         }}
       >
-        <Button type='submit'>Sign out</Button>
+        <Button size='icon' variant='icon' type='submit'>
+          <RiLogoutBoxLine />
+          <span className='hidden lg:block'>Sign out</span>
+        </Button>
       </form>
     </div>
   );

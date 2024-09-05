@@ -17,12 +17,12 @@ const Pagination = ({
 
   return (
     <div className='flex items-center justify-between text-gray-500'>
-      <div>
-        <span>
+      <div data-aos='zoom-in'>
+        <span >
           Page {currentPage} of {totalPages}
         </span>
       </div>
-      <div className='flex items-center gap-3'>
+      <div className='flex items-center gap-3' data-aos='zoom-in'>
         <Button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}

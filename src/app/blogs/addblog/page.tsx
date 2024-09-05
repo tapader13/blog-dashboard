@@ -8,15 +8,17 @@ const AddBlogs = async () => {
   console.log(session?.user, 'session');
   if (!session?.user) {
     redirect('/login');
-  } 
-  
+  }
+
   return (
     <div className='px-3 w-full'>
       <div className='flex justify-between'>
-        <h1 className='text-2xl font-bold'>
+        <h1 data-aos='fade-down' className='text-2xl font-bold'>
           Add New <span className='text-blue-500'>Blogs</span>
         </h1>
-        <h3 className='text-xl font-bold text-gray-500'>/blogs/addblog</h3>
+        <h3 className='text-xl font-bold text-gray-500' data-aos='fade-down'>
+          /blogs/addblog
+        </h3>
       </div>
       <div className='mt-10 w-full'>
         <Blog />

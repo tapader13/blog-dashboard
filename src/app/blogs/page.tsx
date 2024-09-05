@@ -14,8 +14,9 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { PopUp } from '@/components/PopUp';
 
-interface BlogData {
+export interface BlogData {
   _id: string;
   title: string;
   slug: string;
@@ -47,6 +48,7 @@ const Blogs = () => {
   const router = useRouter();
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [blogsPerPage] = useState(2);
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
@@ -56,12 +58,14 @@ const Blogs = () => {
       router.push('/login');
     } else if (status === 'authenticated') {
       const fetchBlogs = async () => {
+        setLoading(true);
         try {
           const blogsData = await getBlogs();
-          setBlogs(blogsData);
+          setBlogs(blogsData.filter((blog) => blog.status === 'published'));
         } catch (error) {
           console.error('Error fetching blogs:', error);
         }
+        setLoading(false);
       };
 
       fetchBlogs();
@@ -70,65 +74,81 @@ const Blogs = () => {
   console.log(blogs, 'blog');
   return (
     <div className='px-3 w-full'>
-      {session && (
+      {loading ? (
+        <div className='loader'></div>
+      ) : (
         <>
-          <div className='flex justify-between'>
-            <h1 className='text-2xl font-bold'>
-              All Published <span className='text-blue-500'>Blogs</span>
-            </h1>
-            <h3 className='text-xl font-bold text-gray-500'>/blogs</h3>
-          </div>
-          <div className='mt-10 w-full'>
-            <Table className='w-full mx-auto'>
-              {/* <TableCaption>A list of published blogs.</TableCaption> */}
-              <TableHeader className='w-full'>
-                <TableRow className='w-full'>
-                  <TableHead className='w-1/6'>Number</TableHead>
-                  <TableHead className='w-2/6'>Title</TableHead>
-                  <TableHead className='w-2/6'>Slug</TableHead>
-                  <TableHead className='w-1/6'>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className='w-full'>
-                {currentBlogs &&
-                  currentBlogs.map((blog) => (
-                    <TableRow key={blog._id} className='w-full'>
-                      <TableCell className='font-medium w-1/6'>
-                        {blog._id}
-                      </TableCell>
-                      <TableCell className='w-2/6'>{blog.title}</TableCell>
-                      <TableCell className='w-2/6'>{blog.slug}</TableCell>
-                      <TableCell className='w-1/6'>
-                        <div className='flex gap-2 items-center'>
-                          <Link href={`/blogs/edit/${blog._id}`}>
-                            <Button className='rounded-full'>Edit</Button>
-                          </Link>
-                          <Link href={`/blogs/delete/${blog._id}`}>
-                            <Button className='rounded-full'>Delete</Button>
-                          </Link>
-                        </div>
-                      </TableCell>
+          {session && (
+            <>
+              <div className='flex justify-between'>
+                <h1 className='text-2xl font-bold' data-aos='fade-up'>
+                  All Published <span className='text-blue-500'>Blogs</span>
+                </h1>
+                <h3
+                  className='text-xl font-bold text-gray-500'
+                  data-aos='fade-down'
+                >
+                  /blogs
+                </h3>
+              </div>
+              <div className='mt-10 w-full '>
+                <Table
+                  className='w-full mx-auto overflow-x-scroll sm:overflow-x-hidden'
+                  data-aos='fade-right'
+                  data-aos-offset='300'
+                >
+                  {/* <TableCaption>A list of published blogs.</TableCaption> */}
+                  <TableHeader className='w-full'>
+                    <TableRow className='w-full'>
+                      <TableHead className='w-1/6 text-center'>
+                        Number
+                      </TableHead>
+                      <TableHead className='w-2/6 text-center'>Title</TableHead>
+                      <TableHead className='w-2/6 text-center'>Slug</TableHead>
+                      <TableHead className='w-1/6 text-center'>
+                        Action
+                      </TableHead>
                     </TableRow>
-                  ))}
-              </TableBody>
-              <TableFooter>
-                <TableRow className='w-full'>
-                  <TableCell colSpan={3}>Total</TableCell>
-                  <TableCell className='text-right'>$2,500.00</TableCell>
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </div>
-          <div className='mt-10'>
-            <div>
-              <Pagination
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                blogsPerPage={blogsPerPage}
-                totalBlogs={blogs.length}
-              />
-            </div>
-          </div>
+                  </TableHeader>
+                  <TableBody className='w-full'>
+                    {currentBlogs &&
+                      currentBlogs.map((blog, i) => (
+                        <TableRow key={blog._id} className='w-full'>
+                          <TableCell className='font-medium w-1/6 text-center'>
+                            {i + 1}
+                          </TableCell>
+                          <TableCell className='w-2/6 text-center'>
+                            {blog.title}
+                          </TableCell>
+                          <TableCell className='w-2/6 text-center'>
+                            {blog.slug}
+                          </TableCell>
+                          <TableCell className='w-1/6 text-center'>
+                            <div className='flex gap-2 items-center'>
+                              <Link href={`/blogs/edit/${blog._id}`}>
+                                <Button className='rounded-full'>Edit</Button>
+                              </Link>
+                              <PopUp blog={blog} />
+                              {/* <Button className='rounded-full'>Delete</Button> */}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className='mt-10'>
+                <div>
+                  <Pagination
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    blogsPerPage={blogsPerPage}
+                    totalBlogs={blogs.length}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

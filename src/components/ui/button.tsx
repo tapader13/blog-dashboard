@@ -20,12 +20,16 @@ const buttonVariants = cva(
         ghost:
           'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
         link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
+        danger:
+          'bg-red-500 text-slate-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90',
+        icon: 'sm:bg-slate-950 text-black sm:text-slate-100 hover:bg-transparent dark:bg-transparent dark:text-black dark:hover:transparent/90',
       },
+
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-full px-8 w-full ',
-        icon: 'h-10 w-10',
+        icon: 'h-10 sm:px-4 sm:py-2 px-1',
       },
     },
     defaultVariants: {

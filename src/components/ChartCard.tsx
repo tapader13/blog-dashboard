@@ -20,12 +20,6 @@ import {
 export const description =
   'A pie chart displaying the distribution of blog types.';
 
-const chartData = [
-  { type: 'Published', amount: 275, fill: 'var(--color-Published)' },
-  { type: 'Pending', amount: 200, fill: 'var(--color-Pending)' },
-  { type: 'Draft', amount: 187, fill: 'var(--color-Draft)' },
-];
-
 const chartConfig = {
   amount: {
     label: 'Amount',
@@ -44,7 +38,31 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ChartCard() {
+export function ChartCard({
+  publishedCount,
+  draftCount,
+}: {
+  publishedCount: number;
+  draftCount: number;
+}) {
+  const chartData = [
+    {
+      type: 'Published',
+      amount: Number(publishedCount),
+      fill: 'var(--color-Published)',
+    },
+    {
+      type: 'Pending',
+      amount: Number(draftCount),
+      fill: 'var(--color-Pending)',
+    },
+    {
+      type: 'Draft',
+      amount: Number(draftCount),
+      fill: 'var(--color-Draft)',
+    },
+  ];
+  console.log(publishedCount, draftCount);
   return (
     <Card className='flex flex-col h-[400px]'>
       <CardHeader className='items-center pb-0'>
@@ -76,7 +94,10 @@ export function ChartCard() {
       </CardContent>
       <CardFooter className='flex-col gap-2 text-sm'>
         <div className='flex items-center gap-2 font-medium leading-none'>
-          Trending up by 5.2% this month <TrendingUp className='h-4 w-4' />
+          Trending up by{' '}
+          {publishedCount > draftCount ? 'publish blog' : 'draft blog'}{' '}
+          {Math.abs(((publishedCount - draftCount) / draftCount) * 100)}%{' '}
+          <TrendingUp className='h-4 w-4' />
         </div>
         <div className='leading-none text-muted-foreground'>
           Showing the distribution of blog types

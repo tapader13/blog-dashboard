@@ -17,6 +17,7 @@ const Blog = ({
   existingCategory,
   existingTags,
   existingStatus,
+  existingSpecificCategory,
 }: {
   id?: string;
   existingTitle?: string;
@@ -25,21 +26,27 @@ const Blog = ({
   existingCategory?: string[];
   existingTags?: string[];
   existingStatus?: string;
+  existingSpecificCategory?: string;
 }) => {
   const [title, setTitle] = useState(existingTitle || '');
   const [slug, setSlug] = useState(existingSlug || '');
+  const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState(existingDescription || '');
 
   const { toast } = useToast();
   const [category, setCategory] = useState<string[]>(existingCategory || []);
   const [tags, setTags] = useState<string[]>(existingTags || []);
   const [status, setStatus] = useState(existingStatus || '');
+  const [specificCategory, setSpecificCategory] = useState(
+    existingSpecificCategory || ''
+  );
   const handleSlugSpace = (e: any) => {
     setSlug(e.target.value.replace(/\s/g, '-'));
   };
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       let response;
       if (id) {
         response = await axios.put(`/api/blogapi`, {
@@ -50,6 +57,7 @@ const Blog = ({
           category,
           tags,
           status,
+          specificCategory,
         });
       } else {
         response = await axios.post('/api/blogapi', {
@@ -59,6 +67,7 @@ const Blog = ({
           category,
           tags,
           status,
+          specificCategory,
         });
       }
       if (response.status === 200 || response.status === 201) {
@@ -69,16 +78,26 @@ const Blog = ({
           } successfully`,
         });
       }
+      setLoading(false);
     } catch (error) {
       toast({
         title: 'Error',
         description: 'There was an error processing your request',
       });
+    } finally {
+      setLoading(false);
     }
   };
+  if (loading) {
+    return <div className='loader'></div>;
+  }
   return (
     <div className='w-full bg-white p-5 rounded-lg'>
-      <form onSubmit={handleFormSubmit}>
+      <form
+        onSubmit={handleFormSubmit}
+        data-aos='fade-up'
+        data-aos-anchor-placement='top-bottom'
+      >
         <div className='grid w-full items-center gap-1.5 mt-5'>
           <Label htmlFor='title'>Enter Title</Label>
           <Input
@@ -104,7 +123,10 @@ const Blog = ({
           <MarkdownEditor
             onChange={(e) => setDescription(e.text)}
             value={description}
-            style={{ width: '100%', height: '400px' }}
+            style={{
+              width: '100%',
+              height: '400px',
+            }}
             renderHTML={(text) => {
               return (
                 <ReactMarkdown
@@ -187,17 +209,41 @@ const Blog = ({
                 Array.from(e.target.selectedOptions, (option) => option.value)
               )
             }
-            className='w-full p-2 border rounded appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-20 overflow-auto'
+            className='w-full p-2 border rounded appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-28 overflow-auto'
           >
-            <option value='Technology'>Technology</option>
-            <option value='Health'>Health</option>
-            <option value='Education'>Education</option>
-            <option value='Finance'>Finance</option>
-            <option value='Lifestyle'>Lifestyle</option>
-            <option value='Travel'>Travel</option>
-            <option value='Food'>Food</option>
-            <option value='Fashion'>Fashion</option>
-            <option value='Entertainment'>Entertainment</option>
+            <option className='p-2 hover:bg-slate-200' value='JavaScript'>
+              JavaScript
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='React'>
+              React
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Node.js'>
+              Node.js
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Python'>
+              Python
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='HTML'>
+              HTML
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='CSS'>
+              CSS
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='MongoDB'>
+              MongoDB
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Express'>
+              Express
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Next.js'>
+              Next.js
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Tailwind'>
+              Tailwind
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='TypeScript'>
+              TypeScript
+            </option>
           </select>
           <p className='mt-2'>Selected Categories: {category.join(', ')}</p>
         </div>
@@ -214,17 +260,23 @@ const Blog = ({
                 Array.from(e.target.selectedOptions, (option) => option.value)
               )
             }
-            className='w-full p-2 border rounded appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-20 overflow-auto'
+            className='w-full p-2 border rounded appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-28 overflow-auto'
           >
-            <option value='JavaScript'>JavaScript</option>
-            <option value='React'>React</option>
-            <option value='CSS'>CSS</option>
-            <option value='HTML'>HTML</option>
-            <option value='Next.js'>Next.js</option>
-            <option value='Tailwind'>Tailwind</option>
-            <option value='MongoDB'>MongoDB</option>
-            <option value='Express'>Express</option>
-            <option value='Node.js'>Node.js</option>
+            <option className='p-2 hover:bg-slate-200' value='Web Development'>
+              Web Development
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Front End'>
+              Front End
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Back End'>
+              Back End
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Full Stack'>
+              Full Stack
+            </option>
+            <option className='p-2 hover:bg-slate-200' value='Database'>
+              Database
+            </option>
           </select>
           <p className='mt-2'>Selected Tags: {tags.join(', ')}</p>
         </div>
@@ -244,6 +296,25 @@ const Blog = ({
           </select>
         </div>
 
+        {/* specificCategory Field */}
+        <div className='grid w-full items-center gap-1.5 mt-5'>
+          <Label htmlFor='specificCategory'>Specific Category</Label>
+          <select
+            id='specificCategory'
+            value={specificCategory}
+            onChange={(e) => setSpecificCategory(e.target.value)}
+            className='w-full p-2 border rounded'
+          >
+            <option value=''>Select specific category</option>
+            <option value='popular'>Popular</option>
+            <option value='recent'>Recent</option>
+            <option value='editorpick'>Editor’s Pick</option>
+            <option value='trending'>Trending</option>
+            <option value='latest'>Latest</option>
+            <option value='inspiration'>Inspiration</option>
+            <option value='celebration'>Celebration</option>
+          </select>
+        </div>
         <div className='mx-auto w-1/3 mt-5'>
           <Button variant={'destructive'} size='lg'>
             Add Blog

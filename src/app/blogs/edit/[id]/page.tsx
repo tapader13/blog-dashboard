@@ -6,9 +6,12 @@ import { BlogData } from '../../pendingblogs/page';
 
 const getBlogs = async (id: string): Promise<BlogData | null> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/blogapi/${id}`, {
-      cache: 'no-store',
-    });
+    const response = await fetch(
+      `https://blog-dashboard-theta-seven.vercel.app/api/blogapi/${id}`,
+      {
+        cache: 'no-store',
+      }
+    );
 
     if (!response.ok) {
       throw new Error('Failed to fetch the blog data');
@@ -40,12 +43,20 @@ const EditBlogs = async ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const { _id, title, slug, description, category, tags, status } = blogs;
-
+  const {
+    _id,
+    title,
+    slug,
+    description,
+    category,
+    tags,
+    status,
+    specificCategory,
+  } = blogs;
   return (
     <div className='px-3 w-full'>
-      <div className='flex justify-between'>
-        <h1 className='text-2xl font-bold'>
+      <div className='flex justify-between gap-5'>
+        <h1 className='sm:text-2xl text-xl font-bold'>
           Edit <span className='text-blue-500'>{title}</span>
         </h1>
         <h3 className='text-xl font-bold text-gray-500'>/blogs/edit-blog</h3>
@@ -59,6 +70,7 @@ const EditBlogs = async ({ params }: { params: { id: string } }) => {
           existingCategory={category}
           existingTags={tags}
           existingStatus={status}
+          existingSpecificCategory={specificCategory}
         />
       </div>
     </div>
