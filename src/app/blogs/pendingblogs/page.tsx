@@ -26,7 +26,7 @@ export interface BlogData {
   specificCategory: string;
 }
 
-export const getBlogs = async (): Promise<BlogData[]> => {
+const getBlogs = async (): Promise<BlogData[]> => {
   const response = await fetch(
     `https://blog-dashboard-theta-seven.vercel.app/api/blogapi`,
     {

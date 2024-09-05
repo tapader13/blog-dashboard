@@ -4,9 +4,23 @@ import { ChartCard } from '@/components/ChartCard';
 import SmallCard from '@/components/SmallCard';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { BlogData, getBlogs } from './blogs/pendingblogs/page';
+import { BlogData } from './blogs/pendingblogs/page';
 import { useEffect, useState } from 'react';
+const getBlogs = async (): Promise<BlogData[]> => {
+  const response = await fetch(
+    `https://blog-dashboard-theta-seven.vercel.app/api/blogapi`,
+    {
+      cache: 'no-store',
+    }
+  );
 
+  if (!response.ok) {
+    throw new Error('Failed to fetch blogs');
+  }
+
+  const data = await response.json();
+  return data;
+};
 export default function Home() {
   const { data: session, status } = useSession();
   const [blogs, setBlogs] = useState<BlogData[]>([]);
@@ -76,7 +90,7 @@ export default function Home() {
         >
           <Cards convertObject={convertObject} />
         </div>
-        <div className='h-[400px] sm:w-[30%] w-full' >
+        <div className='h-[400px] sm:w-[30%] w-full'>
           <ChartCard publishedCount={publishedCount} draftCount={draftCount} />
         </div>
       </div>
